@@ -5,14 +5,13 @@ A collection of routines for processing images from the PhenoCam
 Network (http://phenocam.sr.unh.edu/).  For the latest version and
 documentation on this library see: http://phenocam.sr.unh.edu/webcam/tools.
 
-Depends: numpy
+Depends: numpy, PIL
 
 """
 
 import numpy as np
 import os, sys, re, glob
 import datetime
-
 
 ###############################################################################
 
@@ -125,3 +124,143 @@ def date2doy(year, month, day):
     thedate = datetime.date(year, month, day)
     return (year, thedate.timetuple()[7])
 
+##############################################################################
+
+def datetime2fdoy(myDateTime):
+    """
+    Given a datetime object return the fractional day-of-year.
+    """
+    
+    myDate=myDateTime.date()
+    myYear=myDate.year
+    jan1=datetime.datetime(myYear,1,1,0,0,0)
+    tdel=myDateTime-jan1
+
+    # ignore microseconds
+    doy=tdel.days+tdel.seconds/86400.
+
+    # add a day so that doy 1.5 is Jan 1 at noon.  This matches
+    # sample output of Steve K. and Michael T. ???? Probably
+    # needs some attention! DOY is really integer in range 1-366.
+    # Here we get decimal between 1 and 367.
+    doy = doy + 1
+
+    return doy
+
+###############################################################################
+
+def getsiteimglist(archive_dir,sitename,
+                   startDT=datetime.datetime(1990,1,1,0,0,0),
+                   endDT=datetime.datetime.now(),
+                   getIR=False):
+    """
+    Returns a list of imagepath names for ALL images in 
+    archive for specified site.  Optional arguments:
+      getIR   : If set to true only return IR images.
+      startDT : Start datetime for image list
+      endDT   : End datetime for image list
+
+    NOTE: This might be lots faster if we just do a glob.glob()
+    on a pattern.  Might not be quite as robust since we're skipping
+    the check the .jpg file being a regular file.  See, getImageCount()
+    below for how this would work!
+    """
+
+    STARTDIR = archive_dir
+    
+    # get startyear and endyear
+    startYear = startDT.year
+    endYear = endDT.year
+
+    # get startmonth and endmonth
+    startMonth = startDT.month
+    endMonth = endDT.month
+
+    imglist = []
+    sitepath = os.path.join(STARTDIR, sitename)
+    if not os.path.exists(sitepath):
+        return imglist
+
+    # get a list of files in the directory
+    yeardirs = os.listdir(sitepath)
+        
+    # loop over all files
+    for yeardir in yeardirs:
+
+            # check that its a directory
+            yearpath = os.path.join(sitepath,yeardir)
+            if not os.path.isdir(yearpath): 
+                continue
+
+            # check if this yeardir could be a 4-digit year.  if not skip
+            if not re.match('^\d\d\d\d$',yeardir):
+                continue
+
+            # check if we're before startYear
+            if (int(yeardir) < startYear) | (int(yeardir) > endYear) :
+                continue
+
+            # get a list of all files in year directory
+            mondirs = os.listdir(yearpath)
+
+            # loop over all files
+            for mondir in mondirs:
+
+                # check that its a directory
+                monpath = os.path.join(yearpath,mondir)
+                if not os.path.isdir(monpath): 
+                    continue
+
+                # check if this mondir could be a 2-digit month.  if not skip
+                if not re.match('^\d\d$',mondir):
+                    continue
+
+                # check month range
+                if (int(mondir) < 1) | (int(mondir) > 12):
+                    continue
+
+                # check start year/month
+                if (int(yeardir) == startYear) & (int(mondir) < startMonth):
+                    continue
+
+                # check end year/month
+                if (int(yeardir) == endYear) & (int(mondir) > endMonth):
+                    continue
+
+                try:
+                    imgfiles = os.listdir(monpath)
+                    if getIR:
+                        image_re="^%s_IR_%s_%s_.*\.jpg$" % (sitename, yeardir, mondir)
+                    else:
+                        image_re="^%s_%s_%s_.*\.jpg$" % (sitename, yeardir, mondir)
+
+                    for imgfile in imgfiles:
+                        # check for pattern match
+                        if not re.match(image_re,imgfile):
+                            continue
+
+                        # get image time
+                        img_dt = fn2datetime(sitename, imgfile, irFlag=getIR)
+
+                        if img_dt < startDT:
+                            continue
+
+                        if img_dt > endDT:
+                            continue
+                        
+                        # only add regular files
+                        imgpath=os.path.join(monpath,imgfile)
+                        if not os.path.isdir(imgpath):
+                            imglist.append(imgpath)
+
+                except OSError, e:
+                    if e.errno==20:
+                        continue                        
+                    else:
+                        errstring = "Python OSError: %s" % (e,)
+                        print errstring
+
+    imglist.sort()
+    return imglist
+
+##########################################################################################

@@ -52,7 +52,7 @@ if __name__ == "__main__":
     print "Expected value:   %4.4f" % (gcc_expected,)
     
     if (gcc_roi - gcc_expected) > .00005:
-        print "Calculation Error has occurred."
+        print "gcc calculation failed"
     else:
-        print "Calculation of gcc value good!"
+        print "gcc calculation succeeded!"
 
