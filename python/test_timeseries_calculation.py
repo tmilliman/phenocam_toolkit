@@ -40,6 +40,9 @@ if __name__ == "__main__":
     # get a list of images for this site
     imlist = pt.getsiteimglist(archive_dir,site)
 
+    # print header for output
+    print "date,time,year,doy,dn-r,dn-g,dn-b,filename"
+
     # loop over list
     for imgpath in imlist:
 
@@ -67,7 +70,6 @@ if __name__ == "__main__":
         imgyear = imgdt.year
         imgfdoy = pt.datetime2fdoy(imgdt)
 
-        print "date,time,year,doy,dn-r,dn-g,dn-b,filename"
         print "%s,%s,%d,%5.4f,%5.2f,%5.2f,%5.2f,%s" % \
               (imgdate, imgtime, imgyear, imgfdoy, r_mean_roi,
                g_mean_roi, b_mean_roi, imgfile,)

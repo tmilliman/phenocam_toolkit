@@ -25,7 +25,7 @@ if __name__ == "__main__":
     now = dt.now()
 
     # print some info to stdout
-    print ""
+    print "========================================="
     print "test_gcc_calculation.py: " 
     print "date: %s" % (now.strftime('%Y-%m-%d %H:%M:%S'),)
     print "image file: %s" % (imgfile,)
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     print "Expected value:   %4.4f" % (gcc_expected,)
     
     if (gcc_roi - gcc_expected) > .00005:
-        print "gcc calculation failed"
+        print "gcc calculation failed!"
     else:
         print "gcc calculation succeeded!"
 
