@@ -10,7 +10,7 @@ import os, sys
 from datetime import datetime as dt
 import phenocam_toolkit as pt
 
-archive_dir = './test_data'
+archive_dir = '../test_data'
 imgfile = 'harvard_2008_08_07_103137.jpg'
 maskfile = 'harvard_deciduous_0001_01.tif'
 gcc_expected = 0.4367

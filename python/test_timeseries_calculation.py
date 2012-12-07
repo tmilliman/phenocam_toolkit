@@ -11,7 +11,7 @@ import os, sys
 from datetime import datetime as dt
 import phenocam_toolkit as pt
 
-archive_dir = './test_data'
+archive_dir = '../test_data'
 site = 'bartlett'
 year = 2006
 maskfile = 'bartlett_deciduous_0001_01.tif' 
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         # find mean values over ROI
         [r_mean_roi, g_mean_roi, b_mean_roi] = pt.get_dn_means(im, roimask)
 
-        # construct GCC value
+        # construct GCC (green chromatic coordinate)
         brt_mean_roi = r_mean_roi + g_mean_roi + b_mean_roi
         gcc_roi = g_mean_roi / brt_mean_roi
 

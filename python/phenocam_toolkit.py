@@ -82,12 +82,12 @@ def fn2datetime(sitename, filename, irFlag=False):
     year=int(dtstring[0:4])
     mon=int(dtstring[5:7])
     day=int(dtstring[8:10])
-    hour=int(dtstring[11:13])
+    hours=int(dtstring[11:13])
     mins=int(dtstring[13:15])
-    sec=int(dtstring[15:17])
+    secs=int(dtstring[15:17])
     
     # return list
-    return datetime.datetime(year, mon, day, hour, mins, sec)
+    return datetime.datetime(year, mon, day, hours, mins, secs)
 
 ###############################################################################
 
@@ -95,7 +95,7 @@ def doy2date(year, doy, out='tuple'):
     '''
     Convert year and yearday into calendar date. Output is a tuple
     (out='tuple': default) ISO string (out='iso'), julian date
-    (out='julian'), or p ython date object (out='date')
+    (out='julian'), or python date object (out='date')
     '''
     year=int(year)
     doy=int(doy)

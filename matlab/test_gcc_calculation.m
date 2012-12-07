@@ -11,9 +11,13 @@ rehash;
 current_dt=datestr(now,0);
 disp(current_dt);
 
-imgfile='./test_data/harvard_2008_08_07_103137.jpg';
-maskfile='./test_data/harvard_deciduous_0001_01.tif';
+archive_dir='../test_data'
+imgfile='harvard_2008_08_07_103137.jpg';
+maskfile='harvard_deciduous_0001_01.tif';
 gcc_expected=0.4367;
+
+imgpath = fullfile(archive_dir,imgfile);
+maskpath = fullfile(archive_dir,maskfile);
 
 disp('=========================================');
 disp('test_gcc_calculation.m')
@@ -22,10 +26,10 @@ disp(sprintf('mask file: %s',maskfile));
 disp('=========================================');
 
 % read in TIFF mask file
-mask = imread(maskfile,'tif');
+mask = imread(maskpath,'tif');
 
 % read in image, print out error message if file is 
-img = imread(imgfile);
+img = imread(imgpath);
 
 [meanred, meangreen, meanblue] = get_dn_means(img,mask);
 
