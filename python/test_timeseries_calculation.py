@@ -70,7 +70,7 @@ if __name__ == "__main__":
         imgyear = imgdt.year
         imgfdoy = pt.datetime2fdoy(imgdt)
 
-        print "%s,%s,%d,%5.4f,%5.2f,%5.2f,%5.2f,%s" % \
+        print "%s,%s,%d,%.4f,%.2f,%.2f,%.2f,%s" % \
               (imgdate, imgtime, imgyear, imgfdoy, r_mean_roi,
                g_mean_roi, b_mean_roi, imgfile,)
 
