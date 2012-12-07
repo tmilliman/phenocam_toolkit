@@ -5,7 +5,7 @@
 % MATLAB phenocam toolkit.
 % 
 
-addpath('phenocam_toolkit');
+addpath('./phenocam_toolkit');
 rehash;
 
 archive_dir = '../test_data';
@@ -26,7 +26,10 @@ disp(['mask: ',maskfile]);
 disp('=========================================');
 
 % read in TIFF mask file
-mask = imread(maskpath,'tif');
+mask = imread(maskpath);
+
+% convert mask to boolean array
+roimask = mask == 0;
 
 % get list of imagepaths for this site
 imlist = getsiteimglist(archive_dir,site);
@@ -45,7 +48,7 @@ for i = 1:nimg
   img = imread(imgpath);
 
   % get mean DN values over ROI mask region
-  [r_mean_roi, g_mean_roi, b_mean_roi] = get_dn_means(img,mask);
+  [r_mean_roi, g_mean_roi, b_mean_roi] = get_dn_means(img,roimask);
   
   % calculate GCC (green chromatic coordinate)
   brt_mean_roi = r_mean_roi + g_mean_roi + b_mean_roi;

@@ -39,6 +39,8 @@ if __name__ == "__main__":
     # open and read mask file
     roi_img = Image.open(maskpath)
     roi_img.load()
+
+    # convert mask image to boolean numpy array
     roimask = np.asarray(roi_img,dtype=np.bool8)
 
     [r_mean_roi, g_mean_roi, b_mean_roi] = pt.get_dn_means(im, roimask)

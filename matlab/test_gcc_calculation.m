@@ -5,7 +5,7 @@
 % brightness as well as calculate GCC for testing and evalution.
 % 
 
-addpath('phenocam_toolkit');
+addpath('./phenocam_toolkit');
 rehash;
 
 current_dt=datestr(now,0);
@@ -26,12 +26,15 @@ disp(sprintf('mask file: %s',maskfile));
 disp('=========================================');
 
 % read in TIFF mask file
-mask = imread(maskpath,'tif');
+roi_img = imread(maskpath);
+
+% convert mask to boolean array
+roimask = roi_img == 0;
 
 % read in image, print out error message if file is 
 img = imread(imgpath);
 
-[meanred, meangreen, meanblue] = get_dn_means(img,mask);
+[meanred, meangreen, meanblue] = get_dn_means(img,roimask);
 
 % calculate green chromatic coordinates
 gcc_roi = meangreen / (meanred + meangreen + meanblue);

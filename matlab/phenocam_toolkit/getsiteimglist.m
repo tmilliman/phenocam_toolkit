@@ -88,7 +88,7 @@ for nydir = 1:nydirs
   end
   
   % check if we're in specified year range
-  if ( str2num(yeardir) < startYear ) | ...
+  if ( str2num(yeardir) < startYear ) || ...
 	( str2num(yeardir) > endYear )
     continue;
   end
@@ -143,7 +143,7 @@ for nydir = 1:nydirs
       end
       fnstart=imgname(1:nprefix);
       fnend=imgname(end-3:end);
-      if ~strcmp(fnstart,prefix) | ...
+      if ~strcmp(fnstart,prefix) || ...
 	    ~strcmp(fnend,'.jpg')
 	continue
       end

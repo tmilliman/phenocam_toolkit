@@ -16,9 +16,9 @@ blue = img(:,:,3);
     
 % calculate green chromatic coordinates    
 % load individual band values
-dnr = mean(mean(red(mask == 0)));
-dng = mean(mean(green(mask == 0)));
-dnb = mean(mean(blue(mask == 0)));
+dnr = mean(red(mask));
+dng = mean(green(mask));
+dnb = mean(blue(mask));
 
 return
   
