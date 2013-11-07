@@ -53,7 +53,7 @@ if __name__ == "__main__":
     print "Calculated value: %4.4f" % (gcc_roi,)
     print "Expected value:   %4.4f" % (gcc_expected,)
     
-    if (gcc_roi - gcc_expected) > .00005:
+    if np.abs(gcc_roi - gcc_expected) > .00005:
         print "gcc calculation failed!"
     else:
         print "gcc calculation succeeded!"

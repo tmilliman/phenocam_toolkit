@@ -46,7 +46,7 @@ disp(dnstr);
 disp(sprintf('Calculated value: %7.4f',gcc_roi));
 disp(sprintf('Expected value: %7.4f',expected_gcc));
 
-if (gcc_roi - gcc_expected) > 0.00005
+if abs(gcc_roi - gcc_expected) > 0.00005
   disp('gcc calculation failed!');
 else
   disp('gcc calculation succeeded!');
